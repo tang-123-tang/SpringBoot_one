@@ -1,10 +1,10 @@
-package com.tjj.javaSpringBootOne.test.vo;
+package com.tjj.javaSpringBootOne.modules.test.vo;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 @Component
- @PropertySource("classpath:application.properties")
+ @PropertySource("classpath:config/application.properties")
  @ConfigurationProperties(prefix = "com.qq")
 public class ApplicationText {
     private int port;

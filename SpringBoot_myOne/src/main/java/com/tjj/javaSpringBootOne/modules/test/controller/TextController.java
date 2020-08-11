@@ -1,13 +1,12 @@
-package com.tjj.javaSpringBootOne.test.controller;
+package com.tjj.javaSpringBootOne.modules.test.controller;
 
-import com.tjj.javaSpringBootOne.test.vo.ApplicationText;
+import com.tjj.javaSpringBootOne.modules.test.vo.ApplicationText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -49,7 +48,7 @@ private final static Logger LOGGER=LoggerFactory.getLogger(TextController.class)
     }
 
     /**
-     * 127.0.0.1:8080/test/test/testDesc
+     * 127.0.0.1:8085/test/testDesc
      *
      * @return
      */
@@ -58,6 +57,11 @@ private final static Logger LOGGER=LoggerFactory.getLogger(TextController.class)
     public String testDesc() {
         return "that was my testDesc";
     }
+
+    /**
+     * 127.0.0.1:8085/test/testLog
+     * @return
+     */
    @GetMapping("/testLog")
     @ResponseBody
     public String testLog(){
@@ -66,7 +70,7 @@ private final static Logger LOGGER=LoggerFactory.getLogger(TextController.class)
        LOGGER.info("that was a  info log");
        LOGGER.warn("that was a  warn log");
        LOGGER.error("that was a  error log");
-               return "that was a testLog";
+               return "that was my page";
     }
 
 }
