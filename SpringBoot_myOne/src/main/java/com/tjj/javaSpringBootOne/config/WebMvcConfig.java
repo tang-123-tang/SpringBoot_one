@@ -24,7 +24,7 @@ public class WebMvcConfig {
     @Bean
     public ServletWebServerFactory WebServerFactory(){
         TomcatServletWebServerFactory tomcatServlet=new TomcatServletWebServerFactory();
-        tomcatServlet.addAdditionalTomcatConnectors(connector());//添加连接器
+       tomcatServlet.addAdditionalTomcatConnectors(connector());//添加连接器
         return  tomcatServlet;
     }
 }
