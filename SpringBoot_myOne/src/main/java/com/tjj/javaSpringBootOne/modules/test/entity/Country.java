@@ -1,11 +1,10 @@
 package com.tjj.javaSpringBootOne.modules.test.entity;
 
-import java.util.Date;
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.Date;
+import java.util.List;
 
 public class Country {
 	private int countryId;
