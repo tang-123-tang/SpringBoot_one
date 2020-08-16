@@ -12,6 +12,9 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -42,5 +45,23 @@ public class StudentServiceImpl implements StudentService {
         student.setStudentName(searchVo.getKeyWord());
         Example<Student> example=Example.of(student,exampleMatcher);
         return studentRepository.findAll(example,pageable);
+    }
+    @Override
+    public List<Student> getStudentsByStudentName(String studentName, int cardId) {
+        if (cardId > 0) {
+            return studentRepository.getStudentsByParams(studentName,cardId);
+        } else {
+//        return Optional
+//                .ofNullable(studentRepository.findByStudentName(studentName))
+//                .orElse(Collections.emptyList());
+//        return Optional
+//                .ofNullable(studentRepository.findByStudentNameLike(
+//                        String.format("%s%S%s", "%", studentName, "%")))
+//                .orElse(Collections.emptyList());
+            return Optional
+                    .ofNullable(studentRepository.findTopByStudentNameLike(
+                            String.format("%s%S%s", "%", studentName, "%")))
+                    .orElse(Collections.emptyList());
+        }
     }
 }

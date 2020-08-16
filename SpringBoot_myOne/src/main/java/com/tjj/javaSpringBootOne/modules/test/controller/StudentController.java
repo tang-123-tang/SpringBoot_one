@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class StudentController {
@@ -44,5 +46,15 @@ public class StudentController {
     @PostMapping(value = "/students",consumes = "application/json")
     public Page<Student> getStudentBySearchVo(@RequestBody SearchVo searchVo) {
         return  studentService.getStudentBySearchVo(searchVo);
+    }
+
+    /**
+     * 127.0.0.1/api/students?studentName=张 ---- get
+     */
+    @GetMapping("/students")
+    public List<Student> getStudentsByParams(
+            @RequestParam String studentName,
+            @RequestParam(required = false, defaultValue = "0") Integer cardId) {
+        return studentService.getStudentsByStudentName(studentName, cardId);
     }
 }
