@@ -56,11 +56,11 @@ public class StudentServiceImpl implements StudentService {
 //                .orElse(Collections.emptyList());
 //        return Optional
 //                .ofNullable(studentRepository.findByStudentNameLike(
-//                        String.format("%s%S%s", "%", studentName, "%")))
+//                        String.format("%s%s%s", "%", studentName, "%")))
 //                .orElse(Collections.emptyList());
             return Optional
                     .ofNullable(studentRepository.findTopByStudentNameLike(
-                            String.format("%s%S%s", "%", studentName, "%")))
+                            String.format("%s%s%s", "%", studentName, "%")))
                     .orElse(Collections.emptyList());
         }
     }
