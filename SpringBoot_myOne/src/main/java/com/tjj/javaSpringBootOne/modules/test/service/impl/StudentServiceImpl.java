@@ -10,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -63,5 +62,13 @@ public class StudentServiceImpl implements StudentService {
                             String.format("%s%s%s", "%", studentName, "%")))
                     .orElse(Collections.emptyList());
         }
+    }
+     //测试各种不同点
+    public static void main(String[] args) {
+        System.out.println(String.format("%s---%S",  "studentName", "studentName") );
+        //%s直接替换 %S替换为大写
+        System.out.println(StringUtils.isEmpty(""));
+        //isEmpty有一个trim（）的过程去掉空格eg:"  "返回false
+        System.out.println(StringUtils.isBlank(""));
     }
 }

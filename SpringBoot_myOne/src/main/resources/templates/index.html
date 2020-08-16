@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>*** Manager System</title>
+    <!--
+    <link th:href="${''}"></link>
+    <link th:href="@{}"></link>
+    -->
+    <script th:src="${'/js/jquery-3.5.0.min.js'}" type="text/javascript"></script>
+    <script th:src="@{https://cdn.bootcss.com/layer/2.1/layer.js}" type="text/javascript"></script>
+</head>
+<body>
+This is test index page.
+<!--include fragements/header.html  引入碎片头文件-->
+<div th:replace="fragements/header"></div>
+<!--include fragements/sidebar.html 引入水平文件-->
+<div th:replace="fragements/sidebar"></div>
+
+<!--if ${template}!=null include ${tenptage-->
+<!--/*@thymesVar id="tempate" type=""*/-->
+<div th:if="${tempate}">
+    <div th:replace="${tempate}"></div>
+</div>
+<!--include fragements/footer.html 尾部-->
+<div th:replace="fragements/footer::footer"></div>
+
+</body>
+</html>

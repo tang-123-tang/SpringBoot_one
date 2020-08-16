@@ -44,9 +44,10 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    @Transactional
+    @Transactional(noRollbackFor = ArithmeticException.class)//出现ArithmeticException异常可以进行修改
     public Result<City> updateCity(City city) {
         cityDao.updateCity(city);
+        //int x=10/0;
         return new Result<>(Result.ResultStatus.SUCCESS.status,"SUCCESS ABOUT UPDATE",city);
     }
 

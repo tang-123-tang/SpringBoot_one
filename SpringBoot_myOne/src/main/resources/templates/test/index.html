@@ -1,0 +1,29 @@
+This is index page.
+<p th:text="${msg}"></p><!--不会对html进行解析-->
+<p th:utext="${msg}"></p><!--对html进行解析-->
+text里面的加：
+<p th:text="${a}+${b}"></p><br>
+utext里面的加：
+<p th:utext="${a}+${b}"></p><br>
+text里面的||：
+<p th:text="|${a} ${b}|"></p><br>
+utext里面的||：
+<p th:utext="|${a} ${b}|"></p><br>
+text里面的>：
+<p th:text="${a}>${b}"></p><br>
+utext里面的>：
+<p th:utext="${a}>${b}"></p><br>
+<!--<a th:href="@{/api/student(studentId=${student.studentID})}">查看信息</a>-->
+<!--相当于<a href="/api/student?studentId=${student.studentID}"></a>-->
+
+<div th:if="${flag}">用if,true则显示</div>
+
+<div th:unless="${flag2}">用unless,false则显示</div>
+<div th:switch="${student.studentName}">
+    <div th:case="'wangwu'">我是wangwu</div>
+    <div th:case="'wangwdu'">我是wangwdu</div>
+</div>
+<a th:href="@{${baiduURL}}">百度链接</a>
+<img th:src="@{${imgPath}}" />
+<img th:attr="src=@{${imgPath}}" />
+<input th:attr="type='text'" th:value="${valueP}">
