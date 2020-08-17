@@ -1,6 +1,8 @@
 package com.tjj.javaSpringBootOne.modules.test.controller;
 
+import com.tjj.javaSpringBootOne.modules.test.entity.City;
 import com.tjj.javaSpringBootOne.modules.test.entity.Student;
+import com.tjj.javaSpringBootOne.modules.test.service.CityService;
 import com.tjj.javaSpringBootOne.modules.test.vo.ApplicationText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @RequestMapping("/test")
@@ -28,6 +34,8 @@ private final static Logger LOGGER=LoggerFactory.getLogger(TextController.class)
     private String random;
 @Autowired
     ApplicationText applicationText;
+@Autowired
+    CityService cityService;
 
     /**
      *127.0.0.1/test/index
@@ -49,6 +57,11 @@ private final static Logger LOGGER=LoggerFactory.getLogger(TextController.class)
     modelMap.addAttribute("baiduURL","http://www.baidu.com");
     modelMap.addAttribute("imgPath","https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1830914723,3154965800&fm=26&gp=0.jpg");
     modelMap.addAttribute("valueP","one");
+    List<City> cities = cityService.getCitiesByCountryId(522);
+    modelMap.addAttribute("cities",cities);
+    modelMap.addAttribute("Cityurl","/api/city");
+    modelMap.addAttribute("city",cities.get(0));
+
     return "index";
     }
 @GetMapping("/index2")
@@ -58,6 +71,9 @@ private final static Logger LOGGER=LoggerFactory.getLogger(TextController.class)
 
     return "index";
     }
+
+
+
     /**
      * 127.0.0.1:8085/test/testConfig
      *
@@ -80,14 +96,17 @@ private final static Logger LOGGER=LoggerFactory.getLogger(TextController.class)
     }
 
     /**
-     * 127.0.0.1:8085/test/testDesc
+     * 127.0.0.1/test/testDesc?paramKey=fuck
      *
      * @return
      */
     @GetMapping("/testDesc")
     @ResponseBody
-    public String testDesc() {
-        return "that was my testDesc";
+    public String testDesc(HttpServletRequest request,
+                           @RequestParam(value = "paramKey") String paramValue) {
+        String paramValue2=request.getParameter("paramKey");
+
+        return "that was my testDesc"+paramValue+"===="+paramValue2;
     }
 
     /**

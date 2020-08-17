@@ -2,6 +2,7 @@ package com.tjj.javaSpringBootOne.modules.test.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.tjj.javaSpringBootOne.aspect.ServiceAnnotation;
 import com.tjj.javaSpringBootOne.modules.common.vo.Result;
 import com.tjj.javaSpringBootOne.modules.common.vo.SearchVo;
 import com.tjj.javaSpringBootOne.modules.test.dao.CityDao;
@@ -20,7 +21,9 @@ import java.util.Optional;
 public class CityServiceImpl implements CityService {
     @Autowired
     CityDao cityDao;
+
     @Override
+    @ServiceAnnotation(value = "bbb")
     public List<City> getCitiesByCountryId(int countryId) {
         return  cityDao.getCitiesByCountryId(countryId);
     }

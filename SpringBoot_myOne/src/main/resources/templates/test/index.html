@@ -27,3 +27,21 @@ utext里面的>：
 <img th:src="@{${imgPath}}" />
 <img th:attr="src=@{${imgPath}}" />
 <input th:attr="type='text'" th:value="${valueP}">
+<table >
+    <tr th:each="city:${cities}">
+        <td th:text="${city.cityId}"></td>
+        <td th:text="${city.cityName}"></td>
+        <td th:text="${city.localCityName}"></td>
+    </tr>
+</table>
+
+<select >
+    <option  th:each=" cityv,cityStatus:${cities}" th:value="${cityv.cityId}" th:text="${cityv.cityName}"></option>
+</select>
+<form th:action="${Cityurl}" method="post" th:object="${city}" >
+    <input type="hidden" name="_method" value="PUT">
+    用户id<input   th:field="*{cityId}" readonly>
+    用户Name<input  th:field="*{cityName}">
+    City Name <input  th:field="*{localCityName}" readonly>
+    <button type="submit">提交</button>
+</form>
