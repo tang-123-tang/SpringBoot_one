@@ -23,22 +23,22 @@ public class ServiceAspect {
     public void servicePointCut(){}
     @Before(value="com.tjj.javaSpringBootOne.aspect.ServiceAspect.servicePointCut()")
     public void beforeService(JoinPoint joinPoint){
-        LOGGER.debug("=======This is before Service");
+        LOGGER.debug("=======This is before Service======");
         ServletRequestAttributes attributes=(ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
-        LOGGER . debug("请求来源:"+ request. getRemoteAddr());
-        LOGGER. debug("请求URL :"
-                + request.getRequestURL(). toString());
-        LOGGER. debug("请求方式: " + request. getMethod());
-        LOGGER. debug("响应方法: " + joinPoint . getSignature() . getDeclaringTypeName() + "."+
-                joinPoint. getSignature(). getName());
-        LOGGER. debug("请求参数:"+ Arrays.toString(joinPoint .getArgs()));
+        LOGGER.debug("请求来源:"+ request. getRemoteAddr());
+        LOGGER.debug("请求URL :"
+                + request.getRequestURL().toString());
+        LOGGER.debug("请求方式: " + request.getMethod());
+        LOGGER.debug("响应方法: " + joinPoint.getSignature() . getDeclaringTypeName() + "."+
+                joinPoint. getSignature().getName());
+        LOGGER.debug("请求参数:"+ Arrays.toString(joinPoint .getArgs()));
 
     }
     @Around(value="com.tjj.javaSpringBootOne.aspect.ServiceAspect.servicePointCut()")
     public Object aroundService(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         LOGGER.debug("=======This is around Service====");
-        return  proceedingJoinPoint.proceed(proceedingJoinPoint.getArgs());
+        return   proceedingJoinPoint.proceed(proceedingJoinPoint.getArgs());
     }
     @After(value="com.tjj.javaSpringBootOne.aspect.ServiceAspect.servicePointCut()")
     public void afterService(){

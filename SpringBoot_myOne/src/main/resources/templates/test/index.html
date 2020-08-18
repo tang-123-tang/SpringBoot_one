@@ -1,4 +1,31 @@
 This is index page.
+<h3>file upload and downlod</h3>
+<a href="/test/file?fileName=QQ截图20200818134531.png" >download file</a>
+<br>
+<p th:text="${message}" ></p>
+<p>上传文件,使用multipart/form-data类型</p>
+ <form action=" /test/file" method= "post" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <button type="submit">.上传</button>
+</form>
+<br>
+<form action=" /test/files" method="post" enctype= "multipart/form-data" >
+    <input type= "file" name="files" >
+    <input type="file" name="files">
+    <button type="submit"> 上传</button>
+     </form>
+
+
+
+
+
+
+
+
+
+
+
+
 <p th:text="${msg}"></p><!--不会对html进行解析-->
 <p th:utext="${msg}"></p><!--对html进行解析-->
 text里面的加：
