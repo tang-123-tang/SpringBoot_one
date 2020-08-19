@@ -21,27 +21,11 @@
     <script th:src="${'/plugin/jquery/dist/jquery.min.js'}"></script>
     <!-- Bootstrap -->
     <script th:src="${'/plugin/bootstrap/js/bootstrap.bundle.min.js'}"></script>
- </head>
-<body class="nav-md">
-<div class="container body">
-    <div class="main_container">
-
-        <!--include fragements/sidebar.html 引入水平文件-->
-        <div th:replace="fragements/sidebar"></div>
-        <!--include fragements/header.html  引入碎片头文件-->
-        <div th:replace="fragements/header"></div>
-
-
-        <!--/*@thymesVar id="tempate" type=""*/-->
-        <div th:if="${tempate}">
-            <div th:replace="${tempate}"></div>
-        </div>
-
-        <!--include fragements/footer.html 尾部-->
-        <div th:replace="fragements/footer"></div>
-    </div>
+</head>
+<body class="login">
+<div>
+ this is indexSimple
 </div>
-
 
 <!-- Custom Theme Scripts -->
 <script th:src="${'/js/custom.min.js'}"></script>

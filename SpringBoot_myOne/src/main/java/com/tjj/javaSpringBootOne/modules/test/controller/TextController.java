@@ -44,10 +44,21 @@ private final static Logger LOGGER=LoggerFactory.getLogger(TextController.class)
 @Autowired
     CityService cityService;
 
+
+    /**127.0.0.1/test/indexSimple ----get
+     * @return
+     */
+@GetMapping("/indexSimple")
+public String indexSimpletTestPage(){
+
+   return "indexSimple";
+}
+
     /**127.0.0.1/test/file ---get
      * @param fileName
      * @return
      */
+
     @GetMapping("/file")
     public ResponseEntity<Resource> downLoadFile(@RequestParam String fileName){
         Resource resource= null;
