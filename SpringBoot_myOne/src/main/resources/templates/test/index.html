@@ -1,4 +1,20 @@
 <div class="right_col" role="main">
+    <div id="pageModa">
+ {{titile}}<br>
+  User Name :<input type="text" :value="userName"><br>
+  User Name :<input type="text" v-bind:value="password"><br>
+    <h3>表单控制绑定-------双向绑定</h3><br>
+    Email:<input type="text" v-model="email"><br>
+    Step <input type="text" v-model.number="step">
+    Total:<input type="text" v-model="total"><br>
+    <h3>绑定事件</h3><br>
+    test_!:<input type="button" @click="test_1()" value="test_!"><br><br>
+    test_2:<input type="button" v-on:click="test_2()" value="test_2"><br>
+</div>
+
+
+
+
 This is index page.
 <h3>file upload and downlod</h3>
 <a href="/test/file?fileName=QQ截图20200818134531.png" >download file</a>
@@ -74,3 +90,30 @@ utext里面的>：
     <button type="submit">提交</button>
 </form>
 </div>
+
+<script type="text/javascript">
+    var userVue=new Vue({
+        el:"#pageModa",
+        data:{
+            titile:"vue test",
+            userName:"张三",
+            password:"345res",
+            email:"hgtjfd@123.com",
+            step:1,
+            total:0
+        },
+        methods:{
+            test_1:function () {
+                this.userName="11111111111111";
+                this.password="kkkkkkkkkk";
+                alert(this.userName+this.password);
+            },
+            test_2:function () {
+                alert(this.email);
+                this.total=this.total+this.step;
+            }
+        }
+
+
+    });
+</script>

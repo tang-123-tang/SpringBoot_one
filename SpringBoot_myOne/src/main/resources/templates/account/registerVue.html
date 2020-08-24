@@ -1,0 +1,88 @@
+<div class="login_wrapper">
+    <div id="register" class="animate form login_form">
+        <section class="login_content">
+            <form id="registVu" action="javascript:void(0);">
+                <h1>*** Manager System</h1>
+                <div>
+                    <input name="userName" v-model="userName" type="text" class="form-control" placeholder="Username" required="" />
+                </div>
+                <div>
+                    <input name="password" v-model="password" type="password" class="form-control" placeholder="Password" required="" />
+                </div>
+                <div>
+                    <a id="registerButtion" @click="register()" class="btn btn-default submit" href="javascript:void(0);">Submit</a>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="separator">
+                    <p class="change_link">Already a member ?
+                        <a href="/account/login" class="to_register"> Log in </a>
+                    </p>
+
+                    <div class="clearfix"></div>
+                    <br />
+                    <div>
+                        <h1><i class="fa fa-paw"></i> Gentelella TangJingJing!</h1>
+                        <p>©2016 All Rights Reserved.Create by TangJingJing</p>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+<script type="text/javascript">
+   var de=new Vue({
+       el:"#registVu",
+       data:{
+           userName:"",
+           password:""
+       },
+       created:function(){
+           this.initEditModal(6);
+       },
+       methods:{
+
+           register:function(){
+               var user={};
+               user.userName=this.userName;
+               user.password=this.password;
+               var te=this;
+               $.ajax({
+                   url:"/api/user",
+                   type:"post",
+                   data:JSON.stringify(user),
+                   contentType:"application/json",
+                   success:function (data) {
+                       if(data.status==200) {
+                           alert("注册成功");
+                       }
+                       else
+                           layer.msg(data.message,{icon:0});
+                   },
+                   error:function (data) {
+                       layer.msg(data.message,{icon:0});
+                   }
+
+               })
+           },
+           initEditModal:function (userId) {
+   var te=this;
+       $.ajax({
+           url : "/api/user/" + userId,
+           type : "get",
+           success : function (rs) {
+            te.userName=rs.userName;
+            te.password=rs.password;
+           },
+           error : function (data) {
+               layer.alert(data.responseText, {icon: 0});
+           }
+       });
+   }
+
+       }
+   });
+
+
+</script>

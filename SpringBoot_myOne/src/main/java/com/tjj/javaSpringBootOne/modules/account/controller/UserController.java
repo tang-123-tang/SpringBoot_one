@@ -8,6 +8,10 @@ import com.tjj.javaSpringBootOne.modules.common.vo.SearchVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api")
@@ -29,8 +33,10 @@ public class UserController {
      * {"userName":"admin","password":"123"}
      */
    @PostMapping(value = "/login",consumes = MediaType.APPLICATION_JSON_VALUE)
-    Result<User> login(@RequestBody User user){
-       return userService.login(user);
+    Result<User> login(@RequestBody User user, HttpSession httpSession){
+       Result<User> result=userService.login(user);
+       httpSession.setAttribute("adminUser",result.getResults());
+       return result;
     }
 
     /**
@@ -74,4 +80,14 @@ public class UserController {
     public User getUserByUserId(@PathVariable int userId) {
         return userService.getUserByUserId(userId);
     }
+    @PostMapping(value = "/userImg",consumes = "multipart/form-data")
+    public Result<String> uploadFile(@RequestParam MultipartFile file){
+
+        return userService.uploadFile(file);
+    }
+    @PutMapping("/profile")
+    public Result<User> updateProfile(@RequestBody User user){
+        return userService.updateProfile(user);
+    }
+
 }

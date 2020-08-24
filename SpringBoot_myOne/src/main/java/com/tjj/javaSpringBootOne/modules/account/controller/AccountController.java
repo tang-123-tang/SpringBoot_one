@@ -38,11 +38,14 @@ public class AccountController  {
     public String registerPage(){
         return "indexSimple";
     }
+    @GetMapping("/registerVue")
+    public String registerVuePage(){
+        return "indexSimple";
+    }
 
-    /**
-     * 127.0.0.1/account/users
-     * @return
-     */
-
+    @GetMapping("/profile")
+    public String profilePage(){
+        return "index";
+    }
 
 }

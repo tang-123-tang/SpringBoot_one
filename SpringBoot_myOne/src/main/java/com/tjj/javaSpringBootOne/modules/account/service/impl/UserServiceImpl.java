@@ -2,6 +2,7 @@ package com.tjj.javaSpringBootOne.modules.account.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.tjj.javaSpringBootOne.config.ResourceBeanCofig;
 import com.tjj.javaSpringBootOne.modules.account.dao.UserDao;
 import com.tjj.javaSpringBootOne.modules.account.dao.UserRoleDao;
 import com.tjj.javaSpringBootOne.modules.account.entity.Role;
@@ -13,7 +14,10 @@ import com.tjj.javaSpringBootOne.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +29,8 @@ public class UserServiceImpl implements UserService {
      private UserDao  userDao;
     @Autowired
      private UserRoleDao userRoleDao;
+    @Autowired
+    ResourceBeanCofig resourceBeanCofig;
     @Override
     @Transactional
     public Result<User> insertUser(User user) {
@@ -49,7 +55,7 @@ public class UserServiceImpl implements UserService {
     public Result<User> login(User user) {
         User userTemp=userDao.getUserByUserName(user.getUserName());
         if(userTemp !=null&&userTemp.getPassword().equals(MD5Util.getMD5(user.getPassword()))){
-            return  new Result<User>(Result.ResultStatus.SUCCESS.status,"登录成功",user);
+            return  new Result<User>(Result.ResultStatus.SUCCESS.status,"登录成功",userTemp);
         }
         return new Result<>(Result.ResultStatus.FAILED.status,"密码错误");
     }
@@ -90,5 +96,43 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUserId(int userId) {
         return userDao.getUserByUserId(userId);
+    }
+
+    @Override
+    public Result<String> uploadFile(MultipartFile multipartFile) {
+        if(multipartFile.isEmpty())
+        {
+            return new Result<String>(
+                    Result.ResultStatus.FAILED.status, "Please select img.");
+        }
+        String relativePath="";
+        String destFile="";
+        try {
+        String osName=System.getProperty("os.name");
+        if(osName.toLowerCase().startsWith("win")){
+          destFile=resourceBeanCofig.getLocationPathForWindows()+multipartFile.getOriginalFilename();
+        }else{
+            destFile=resourceBeanCofig.getLocationPathForLinux()+multipartFile.getOriginalFilename();
+        }
+        relativePath=resourceBeanCofig.getRelativePath()+multipartFile.getOriginalFilename();
+        File file=new File(destFile);
+            multipartFile.transferTo(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new Result<String>(
+                    Result.ResultStatus.FAILED.status, "Upload failed.");
+        }
+        return new Result<String>(
+                Result.ResultStatus.SUCCESS.status, "Upload success.", relativePath);
+    }
+
+    @Override
+    public Result<User> updateProfile(User user) {
+        User user1=userDao.getUserByUserName(user.getUserName());
+        if(user1!=null&&user1.getUserId()!=user.getUserId()){
+            return new Result<User>(Result.ResultStatus.FAILED.status, "User name is repeat.");
+        }
+        userDao.updateUser(user);
+        return new Result<User>(Result.ResultStatus.SUCCESS.status, "Edit success.", user);
     }
 }

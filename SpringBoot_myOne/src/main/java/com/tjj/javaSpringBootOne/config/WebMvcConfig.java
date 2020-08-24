@@ -12,7 +12,9 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration//代表是配置类
@@ -20,6 +22,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
     @Value("${server.http.port}")
     private int port;
+    @Autowired
+    ResourceBeanCofig resourceBeanCofig;
     @Autowired
     RequestViewInterceptor requestViewInterceptor;
     @Bean
@@ -46,5 +50,16 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(requestViewInterceptor).addPathPatterns("/**");
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String osName = System.getProperty("os.name");
+        if (osName.toLowerCase().startsWith("win")) {
+            //addResourceHandler相对  addResourceLocations绝对  ResourceUtils.FILE_URL_PREFIX前缀
+            registry.addResourceHandler(resourceBeanCofig.getRelativePathPattern()).addResourceLocations(ResourceUtils.FILE_URL_PREFIX + resourceBeanCofig.getLocationPathForWindows());
+        }else{
+            registry.addResourceHandler(resourceBeanCofig.getRelativePathPattern()).addResourceLocations(ResourceUtils.FILE_URL_PREFIX + resourceBeanCofig.getLocationPathForLinux());
+        }
     }
 }

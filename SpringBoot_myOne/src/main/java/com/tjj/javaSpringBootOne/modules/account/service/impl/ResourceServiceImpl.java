@@ -54,7 +54,7 @@ public class ResourceServiceImpl implements ResourceService {
     @Transactional
     public Result<Resource> updateResource(Resource resource) {
         Resource resourceTemp=resourceDao.getRoleByresourceNameName(resource.getResourceName());
-        if(resourceTemp!=null){
+        if(resourceTemp!=null &&resourceTemp.getResourceId()!=resource.getResourceId()){
             return  new Result<Resource>(Result.ResultStatus.FAILED.status,"Resource name is repeat");
         }
         resourceDao.updateResource(resource);
