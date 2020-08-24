@@ -27,8 +27,8 @@
                 <div class="x_panel">
                     <div class="x_title">
                         <ul class="nav navbar-right panel_toolbox" style="margin-left:0; float: left;">
-                            <button id="addUserBtn" type="button" class="btn btn-primary"
-                                    data-toggle="modal" data-target="#addUserModal">Add</button>
+                            <button id="addRoleBtn" type="button" class="btn btn-primary"
+                                    data-toggle="modal" data-target="#addRoleModal">Add</button>
                             </li>
                         </ul>
                         <div class="clearfix"></div>
@@ -40,10 +40,8 @@
                                     <table id="datatable" class="table table-striped table-bordered" style="width:100%">
                                         <thead>
                                         <tr>
-                                            <th>UserId</th>
-                                            <th>UserName</th>
-                                            <th>Password</th>
-                                            <th>CreateDate</th>
+                                            <th>roleId</th>
+                                            <th>roleName</th>
                                             <th>Operation</th>
                                         </tr>
                                         </thead>
@@ -60,8 +58,8 @@
     </div>
 </div>
 
-<div th:replace="account/userAdd"></div>
-<div th:replace="account/userEdit"></div>
+<div th:replace="account/roleAdd"></div>
+<div th:replace="account/roleEdit"></div>
 
 
 <!-- import js-->
@@ -90,16 +88,16 @@
     $(document).ready(function() {
         initUserTable(DEFAULT_PAGE_SIZE);
 
-        $("#addUserBtn").bind("click", function() {
+        $("#addRoleBtn").bind("click", function() {
             intAddModal();
         });
 
-        $("#insertUserBtn").bind("click", function() {
-            addUser();
+        $("#insertRoleBtn").bind("click", function() {
+            addRole();
         });
 
-        $("#editUserBtn").bind("click", function() {
-            editUser();
+        $("#editRoleBtn").bind("click", function() {
+            editRole();
         });
     });
 
@@ -131,7 +129,7 @@
                 searchVo.keyWord = data.search.value;
 
                 $.ajax({
-                    url : "/api/users",
+                    url : "/api/roles",
                     type : "post",
                     contentType: "application/json",
                     data : JSON.stringify(searchVo),
@@ -157,8 +155,7 @@
                         var gearDatas = [];
                         for (var i = 0; i < rs.list.length; i++) {
                             //包装行数据
-                            var rowData = new TData(rs.list[i].userId, rs.list[i].userName,
-                                rs.list[i].password, rs.list[i].createDate);
+                            var rowData = new TData(rs.list[i].roleId, rs.list[i].roleName);
                             // 将行数据放到数组里
                             gearDatas.push(rowData);
                         }
@@ -173,37 +170,33 @@
                 });
             },
             "columns": [ //定义行数据字段
-                {data: 'userId', name: "user_id", sortable: true},
-                {data: 'userName', name: "user_name", sortable: true},
-                {data: 'password', name: "password", sortable: true},
-                {data: 'createDate', name: "create_date", sortable: true},
+                {data: 'roleId', name: "role_id", sortable: true},
+                {data: 'roleName', name: "role_name", sortable: true},
                 {data: 'operate', width: '80px', sortable: false}
             ]
         });
     }
     //行数据结构
-    function TData(userId, userName, password, createDate) {
-        this.userId = userId;
-        this.userName = userName;
-        this.password = password;
-        this.createDate = createDate;
+    function TData(roleId,roleName) {
+        this.roleId = roleId;
+        this.roleName = roleName;
         this.operate = function () {
-            return "<a href='#' class='btn_editcolor' data-toggle='modal' data-target='#userEditModal' " +
-                "onclick='initEditModal(\"" + userId + "\")'>编辑</a>&nbsp;" +
-                "<a href='javascript:void(0);' onclick='deleteUser(\"" + userId + "\")' class='btn_editcolor'>删除</a>";
+            return "<a href='#' class='btn_editcolor' data-toggle='modal' data-target='#roleEditModal' " +
+                "onclick='initEditModal(\"" + roleId + "\")'>编辑</a>&nbsp;" +
+                "<a href='javascript:void(0);' onclick='deleteRole(\"" + roleId + "\")' class='btn_editcolor'>删除</a>";
         }
     }
 
-    function initRoles(rolesDivId,roleDE) {
+    function initResouces(rolesDivId,roleAdd) {
         $.ajax({
-            url : "/api/roles",
+            url : "/api/resources",
             type : "get",
             success : function (rs) {
                 var rolesDiv = $("#" + rolesDivId);
                 rolesDiv.empty();
                 $.each(rs, function(i, item) {
-                    rolesDiv.append("<input type='checkbox' name='"+roleDE+"' value='"
-                        + item.roleId + "'/>" + item.roleName + " ");
+                    rolesDiv.append("<input type='checkbox' name='"+roleAdd+"'  value='"
+                        + item.resourceId + "'/>" + item.resourceName + " ");
                 });
             },
             error : function (data) {
@@ -213,30 +206,28 @@
     }
 
     function intAddModal() {
-        $("#userNameForAddPage").val("");
-        $("#passwordForAddPage").val("");
-        initRoles("rolesForAddPage", "roleElementForAdd");
+        $("#roleNameForAddPage").val("");
+        initResouces("resourcesNameForAddPage", "resourcesElementForAdd");
     }
 
-    function addUser() {
-        var user = {};
-        user.userName = $("#userNameForAddPage").val();
-        user.password = $("#passwordForAddPage").val();
-        var roles = new Array();
-        $.each($("input[name='roleElementForAdd']"), function(){
+    function addRole() {
+        var role = {};
+        role.roleName = $("#roleNameForAddPage").val();
+        var resources = new Array();
+        $.each($("input[name='resourcesElementForAdd']"), function(){
             if(this.checked){
-                var role = {};
-                role.roleId = $(this).val();
-                roles.push(role);
+                var resource = {};
+                resource.resourceId = $(this).val();
+                resources.push(resource);
             }
         });
-        user.roles = roles;
+        role.resources = resources;
 
         $.ajax({
-            url : "/api/user",
+            url : "/api/role",
             type : "post",
             contentType: "application/json",
-            data : JSON.stringify(user),
+            data : JSON.stringify(role),
             success : function (rs) {
                 if (rs.status == 200) {
                     initUserTable(DEFAULT_PAGE_SIZE);
@@ -250,18 +241,17 @@
         });
     }
 
-    function initEditModal(userId) {
-        initRoles("rolesForEditPage", "roleElementForEdit");
+    function initEditModal(roleId) {
+        initResouces("resourcesForEditPage", "resourcesElementForEdit");
 
         $.ajax({
-            url : "/api/user/" + userId,
+            url : "/api/role/" + roleId,
             type : "get",
             success : function (rs) {
-                $("#userIdForEditPage").val(rs.userId);
-                $("#userNameForEditPage").val(rs.userName);
-                $("#userImgForEditPage").val(rs.userImg);
-                $.each(rs.roles, function(i, item){
-                    $("input[name='roleElementForEdit'][value=" + item.roleId + "]")
+                $("#roleIdForEditPage").val(rs.roleId);
+                $("#roleNameForEditPage").val(rs.roleName);
+                $.each(rs.resources, function(i, item){
+                    $("input[name='resourcesElementForEdit'][value=" + item.resourceId + "]")
                         .attr("checked","checked");
                 });
             },
@@ -271,26 +261,25 @@
         });
     }
 
-    function editUser() {
-        var user = {};
-        user.userId = $("#userIdForEditPage").val();
-        user.userName = $("#userNameForEditPage").val();
-        user.userImg = $("#userImgForEditPage").val();
-        var roles = new Array();
-        $.each($("input[name='roleElementForEdit']"), function(){
+    function editRole() {
+        var role = {};
+        role.roleId = $("#roleIdForEditPage").val();
+        role.roleName = $("#roleNameForEditPage").val();
+        var resources = new Array();
+        $.each($("input[name='resourcesElementForEdit']"), function(){
             if(this.checked){
-                var role = {};
-                role.roleId = $(this).val();
-                roles.push(role);
+                var resource = {};
+                resource.resourceId = $(this).val();
+                resources.push(resource);
             }
         });
-        user.roles = roles;
+        role.resources = resources;
 
         $.ajax({
-            url : "/api/user",
+            url : "/api/update1",
             type : "put",
             contentType: "application/json",
-            data : JSON.stringify(user),
+            data : JSON.stringify(role),
             success : function (rs) {
                 if (rs.status == 200) {
                     initUserTable(DEFAULT_PAGE_SIZE);
@@ -304,24 +293,24 @@
         });
     }
 
-    function deleteUser(userId) {
-       var result= window.confirm("Are you sure?");
-            if(result) {
-                $.ajax({
-                    url: "/api/user/" + userId,
-                    type: "delete",
-                    success: function (data) {
-                        if (data.status == 200) {
-                            initUserTable(DEFAULT_PAGE_SIZE);
-                        } else {
-                            // window.location.href = data.object;
-                            layer.msg(data.message, {icon: 0});
-                        }
-                    },
-                    error: function (data) {
-                        layer.msg(data.responseText, {icon: 0});
+    function deleteRole(roleId) {
+        var result= window.confirm("Are you sure?");
+        if(result) {
+            $.ajax({
+                url: "/api/role/" + roleId,
+                type: "delete",
+                success: function (data) {
+                    if (data.status == 200) {
+                        initUserTable(DEFAULT_PAGE_SIZE);
+                    } else {
+                        // window.location.href = data.object;
+                        layer.msg(data.message, {icon: 0});
                     }
-                });
-            };
+                },
+                error: function (data) {
+                    layer.msg(data.responseText, {icon: 0});
+                }
+            });
+        };
     }
 </script>

@@ -18,6 +18,15 @@ public class AccountController  {
         return "index";
     }
 
+    @GetMapping("/roles")
+    public String rolesPage(){
+        return "index";
+    }
+    @GetMapping("/resources")
+    public String resourcesPage(){
+        return "index";
+    }
+
     /**
      *127.0.0.1/account/login   ----get
      */
@@ -29,5 +38,11 @@ public class AccountController  {
     public String registerPage(){
         return "indexSimple";
     }
+
+    /**
+     * 127.0.0.1/account/users
+     * @return
+     */
+
 
 }
