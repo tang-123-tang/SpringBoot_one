@@ -11,6 +11,10 @@ import com.tjj.javaSpringBootOne.modules.account.service.UserService;
 import com.tjj.javaSpringBootOne.modules.common.vo.Result;
 import com.tjj.javaSpringBootOne.modules.common.vo.SearchVo;
 import com.tjj.javaSpringBootOne.utils.MD5Util;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,11 +57,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result<User> login(User user) {
-        User userTemp=userDao.getUserByUserName(user.getUserName());
+    /*    User userTemp=userDao.getUserByUserName(user.getUserName());
         if(userTemp !=null&&userTemp.getPassword().equals(MD5Util.getMD5(user.getPassword()))){
             return  new Result<User>(Result.ResultStatus.SUCCESS.status,"登录成功",userTemp);
         }
-        return new Result<>(Result.ResultStatus.FAILED.status,"密码错误");
+        return new Result<>(Result.ResultStatus.FAILED.status,"密码错误");*/
+        Subject subject= SecurityUtils.getSubject();
+        UsernamePasswordToken usernamePasswordToken=new UsernamePasswordToken(user.getUserName(),MD5Util.getMD5(user.getPassword()));
+        usernamePasswordToken.setRememberMe(user.getRememberMe());
+        try {
+            subject.login(usernamePasswordToken);
+            subject.checkRoles();
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result<User>(Result.ResultStatus.FAILED.status,"UserName or password is error.");
+        }
+        Session session = subject.getSession();
+        session.setAttribute("adminUser",(User)subject.getPrincipal());
+        return new Result<User>(Result.ResultStatus.SUCCESS.status,
+                "Login success.", user);
     }
 
     @Override
@@ -134,5 +152,18 @@ public class UserServiceImpl implements UserService {
         }
         userDao.updateUser(user);
         return new Result<User>(Result.ResultStatus.SUCCESS.status, "Edit success.", user);
+    }
+
+    @Override
+    public User getUserByUserName(String userName) {
+        return userDao.getUserByUserName(userName);
+    }
+
+    @Override
+    public void logout() {
+        Subject subject=SecurityUtils.getSubject();
+        subject.logout();
+        Session session=subject.getSession();
+        session.setAttribute("adminUser",null);
     }
 }

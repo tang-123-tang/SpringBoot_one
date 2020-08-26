@@ -356,6 +356,7 @@
                     $("#userImgForProfile").attr("src", "/images/img.jpg");
                 } else {
                     $("#userImgForProfile").attr("src", rs.userImg);
+
                 }
                 $("[name='userNameH3']").html(rs.userName);
             },
@@ -417,6 +418,7 @@
 
                 $("#userImg").val(data.response.results);
                 $('#uploadPicture').fileinput('disable');
+
             } else {
                 $(".fileinput-remove-button").click()
             }

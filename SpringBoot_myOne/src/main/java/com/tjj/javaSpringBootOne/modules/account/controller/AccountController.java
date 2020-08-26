@@ -1,6 +1,9 @@
 package com.tjj.javaSpringBootOne.modules.account.controller;
 
+import com.tjj.javaSpringBootOne.modules.account.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -9,6 +12,8 @@ import java.io.IOException;
 @Controller
 @RequestMapping("/account")
 public class AccountController  {
+    @Autowired
+    UserService userService;
     /**
      * 127.0.0.1/account/users -----get
      * @return
@@ -48,4 +53,15 @@ public class AccountController  {
         return "index";
     }
 
+    /**
+     * /account/logout
+     * @param modelMap
+     * @return
+     */
+    @GetMapping("/logout")
+    public String logout(ModelMap modelMap){
+        userService.logout();
+        modelMap.addAttribute("tempate","/account/login");
+        return "indexSimple";
+    }
 }

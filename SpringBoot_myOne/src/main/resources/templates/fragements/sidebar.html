@@ -9,7 +9,7 @@
         <!-- menu profile quick info -->
         <div class="profile clearfix">
             <div class="profile_pic">
-                <img th:src="${'/images/img.jpg'}" alt="..." class="img-circle profile_img">
+                <img th:src="${session.adminUser.userImg}" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
                 <span>Welcome,</span>
@@ -29,9 +29,9 @@
                     </li>
                     <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="/account/profile">profile</a></li>
-                            <li><a href="/account/users">user</a></li>
-                            <li><a href="/account/roles">role</a></li>
+                            <li shiro:hasAnyRoles="admin,manager,staff"><a href="/account/profile">profile</a></li>
+                            <li shiro:hasAnyRoles="admin,manager"><a href="/account/users">user</a></li>
+                            <li shiro:hasAnyRoles="admin,manager"><a href="/account/roles">role</a></li>
                             <li><a  href="/account/resources">resource</span></a></li>
                         </ul>
                     </li>
@@ -43,9 +43,9 @@
                                 <ul class="nav child_menu">
                                     <li class="sub_menu"><a href="level2.html">Level Two</a>
                                     </li>
-                                    <li><a href="#level2_1">Level Two</a>
+                                    <li  shiro:hasAnyRoles="admin,manager,staff" ><a href="#level2_1">Level Two</a>
                                     </li>
-                                    <li><a href="#level2_2">Level Two</a>
+                                    <li  shiro:hasAnyRoles="admin,manager,staff"><a href="#level2_2">Level Two</a>
                                     </li>
                                 </ul>
                             </li>

@@ -17,4 +17,8 @@ public interface UserService {
     Result<String> uploadFile( MultipartFile multipartFile);
 
     Result<User> updateProfile(User user);
+
+    User getUserByUserName(String userName);
+
+    void logout();
 }

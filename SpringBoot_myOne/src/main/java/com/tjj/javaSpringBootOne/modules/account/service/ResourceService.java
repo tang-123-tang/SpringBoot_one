@@ -16,4 +16,5 @@ public interface ResourceService {
     public Result<Resource> updateResource(Resource resource);
     public Result<Object> deleteResource(int resourceId);
     public Resource getresourceByresourceId(int resurceId);
+    public List<Resource> getresourceByRoled(int roleId);
 }
