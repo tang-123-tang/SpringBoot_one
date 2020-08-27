@@ -1,5 +1,6 @@
 package com.tjj.javaSpringBootOne.modules.account.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -15,7 +16,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "role")
-public class Role {
+public class Role implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
