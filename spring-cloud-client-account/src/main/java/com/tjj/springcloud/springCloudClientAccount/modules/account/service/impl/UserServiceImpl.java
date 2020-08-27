@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
                 "http://CLIENT-TEST/api/cities/{countryId}",List.class,522
         )).orElse(Collections.emptyList());
         user.setCities(cities);
-        return userDao.getUserByUserId(userId);
+        return user;
     }
 
     @Override
