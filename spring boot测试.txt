@@ -14,11 +14,11 @@
 		B、INFO
 		C、WARN
 		D、ERROR
-	以下不是spring boot的核心注解的是 (B  )
+	以下不是spring boot的核心注解的是 (D  )
 		A.	@SpringBootConfiguration
 		B.	@EnableAutoConfiguration
 		C.	@ComponentScan
-		D.	@MapperScan
+		D.	@MapperScan  (mybatis的）
 	要使用springMVC的功能，需要导入那个包 ( C )
 		A．spring-boot-starter-jdbc  
 		B．spring-boot-starter-thymeleaf  
@@ -30,7 +30,7 @@
 		C.	@RestController
 		D.	@RequestMapping
 	当控制层上有@RestController注解时，方法中返回一个字符串“<h1>Hello</h1>”，浏览器调用的结果是 (A  )
-		A. 一级标题显示的Hello
+		A. 一级标题显示的Hello（浏览器会解析）
 		B.	找不到Hello.html
 		C.	<h1>Hello</>
 		D.	Hello
@@ -41,7 +41,7 @@
 	不是SpringBoot核心配置文件是（ C）
 		A.	bootstrap
 		B.	application
-		C.	application-dev
+		C.	application-dev（环境配置）
 	前台使用json参数格式，控制器consumer、参数使用的注解是（A）
 		A、application/josn ---- @RequestBody
 		B、application/josn ---- @ModelAttribute
@@ -65,7 +65,7 @@
 
 二、填空题（共5小题，每小题5分，共25分）
 	获取配置文件的属性值，使用哪个注解______@Value______；
-	Java配置依赖的2个注解是______@Component ____，___@Configuration________;
+	Java配置依赖的2个注解是______@Bean ____，___@Configuration________;
 	Spring Boot修改tomcat端口号为9090应该怎么写？____server.port=9090________;
 	自定义拦截器需要实现____HanlderInteceptor____接口；
 	过滤器需要使用___@WebFilter___注解;
@@ -75,7 +75,7 @@
 	阐述 Spring Boot 特性，举一个例子来解释 Staters 的内容；
                 	快速开发，pom里面以starter形式，生成组类聚的多个jar，形成单条依赖，子类继承父类，实现了版本的控制
 		内配置tomcat,不需要外部tomcat，监控的方便，注解开发，里面有很少的xml配置，如没有web.xml文件
-
+		引入了log4j,springweb
 	Mybatis传参中，#{*}、${*}的区别？
 		#{*}:查询时会自动假如双引号，而且可以防止sql注入
 		${*}:查询时直接进行字符串的拼接，多用出模糊查询，order by
@@ -87,19 +87,21 @@
 		/user  (用于get,post,put,delete)
 		/user/{userId}  (get)
 		/users  (post,get)
+		添加用post,删除用delete，修改用put,
 	简述Git使用流程，写几个常用Git命令？
                先把内容放到本地，让后pull到远程
+                add(把内容提交到序列，在commit
                git clone  地址
                
 	
 	简述shiro两大功能实现流程；
 	1.登录验证：
 		1.在service层，创建Subject对象，创建令牌，把用户名和加密后的密码放入令牌里面，调用subject的login方法，把令牌放进去
-		，底层会到我们自定义的MyRealm里面的验证方法里，然后我们获取传过来的用户名，并去数据库查询是否有该用户，如果没有，
+		，底层会到我们自定义的MyRealm里面的验证方法里，(保证验证器，让数据库密码和前台传来的密码进行匹配）然后我们获取传过来的用户名，并去数据库查询是否有该用户，如果没有，
 		我们自定义一个异常抛出去，如果有，就返回身份验证器
   	2.权限
 	当前端遇到shiro标签，或者控制层遇到shiro注解，就进入MyRealm里的授权方法里，获取到用户对象，然后调用数据库的表，查看有什么权限，
-            并把这些权限放入shiro权限里
+            并把这些权限放入授权验证器里面去
 
 四、编程题（每题10分，共20分）
 	1、提供一个接口，返回 List<User> 列表，对该列表进行排序、保留10条数据；页面端使用 ajax post 方式提交请求，包装查询参数，获取接口返回数据，并遍历数据渲染到页面上 table 表格中；
@@ -131,4 +133,15 @@
         })
     }
 	2、设计一套购物车接口，以 Cookie 或者 redis 实现
-	public Cookie  gowu (HttpServletRequest request);
+	 CookieUtil || ResitUtil 
+	    读写数据 
+	Product、shoppingCart、cartItem
+	  序列化，反序列化
+	ShoppingCartController
+		/api/shoppingCart ----get---获取购物车
+		/api/shoppingCart/{id} ----delete ----删除购物车
+		/api/shoppingCart?items=1,2,3 -----get 
+		/api/cartIem  ----post ----购物车添加item
+		/api/cartItem/{id}   ----put  ----------修改
+		/api/cartItem/{id} -------delete ----------删除item
+		/api/cartItem/{id}  ---------delete----------删除item	
