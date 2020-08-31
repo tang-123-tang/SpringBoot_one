@@ -3,9 +3,10 @@ package com.tjj.springcloud.springCloudClientAccount.modules.account.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class City {
+public class City implements Serializable {
 	private int cityId;
 	private String cityName;
 	private String localCityName;

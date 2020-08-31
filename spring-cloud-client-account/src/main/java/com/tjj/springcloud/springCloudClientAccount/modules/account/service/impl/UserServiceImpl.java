@@ -2,21 +2,26 @@ package com.tjj.springcloud.springCloudClientAccount.modules.account.service.imp
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.tjj.springcloud.springCloudClientAccount.modules.account.dao.UserDao;
 import com.tjj.springcloud.springCloudClientAccount.modules.account.entity.City;
 import com.tjj.springcloud.springCloudClientAccount.modules.account.entity.User;
+import com.tjj.springcloud.springCloudClientAccount.modules.account.service.TestFeignClient;
 import com.tjj.springcloud.springCloudClientAccount.modules.account.service.UserService;
 import com.tjj.springcloud.springCloudClientAccount.modules.common.vo.Result;
 import com.tjj.springcloud.springCloudClientAccount.modules.common.vo.SearchVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.netflix.ribbon.RibbonLoadBalancerClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +31,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
      private UserDao userDao;
     @Autowired
-    RestTemplate restTemplate;
+    private TestFeignClient testFeignClient;
     @Override
     @Transactional
     public Result<User> insertUser(User user) {
@@ -105,14 +110,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+   // @HystrixCommand(fallbackMethod = "getUserByUserIdsFallBack")
     public User getUserByUserId(int userId) {
+
         User user=userDao.getUserByUserId(userId);
-        List<City> cities=Optional.ofNullable(restTemplate.getForObject(
+     /*   List<City> cities=Optional.ofNullable(restTemplate.getForObject(
                 "http://CLIENT-TEST/api/cities/{countryId}",List.class,522
-        )).orElse(Collections.emptyList());
+        )).orElse(Collections.emptyList());*/
+     List<City> cities=testFeignClient.getCitiesByCountryId(522);
         user.setCities(cities);
         return user;
     }
+public  User getUserByUserIdsFallBack(int userId){
+        User user =userDao.getUserByUserId(userId);
+        user.setCities(new ArrayList<City>());
+        return user;
+}
+
 
     @Override
     public Result<String> uploadFile(MultipartFile multipartFile) {

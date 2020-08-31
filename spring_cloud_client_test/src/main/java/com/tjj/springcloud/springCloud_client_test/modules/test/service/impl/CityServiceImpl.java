@@ -22,7 +22,10 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public List<City> getCitiesByCountryId(int countryId) {
-        return  cityDao.getCitiesByCountryId(countryId);
+
+        List<City> cities=cityDao.getCitiesByCountryId(countryId);
+        System.out.println("=======================");
+        return  cities;
     }
 
     @Override
